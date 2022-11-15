@@ -230,4 +230,23 @@ From CovidDeaths
 Where location like '%States%' 
 --Order by 1,2
 
+Create View DeathbyContinent As
+Select continent, MAX(cast(total_deaths as int)) as TotalDeathCount
+From CovidDeaths
+Where continent is not null
+Group By continent
 
+
+Create View HighestInfectionRatePerCountry As
+Select location,population, MAX(total_cases) as HighestInfectionCount, MAX(total_cases/population)*100 as ContractedCovidPercent
+From CovidDeaths
+Where continent is not null
+Group By location, population
+--Order by ContractedCovidPercent desc
+
+Create View HighestInfectionRatePerCountryandDate As
+Select location,population, date, MAX(total_cases) as HighestInfectionCount, MAX(total_cases/population)*100 as ContractedCovidPercent
+From CovidDeaths
+Where continent is not null
+Group By location, population, date
+--Order by ContractedCovidPercent desc
